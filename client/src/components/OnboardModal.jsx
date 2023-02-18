@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
 import styles from '../styles';
-import { CustomButton } from '.';
-import { useGlobalContext } from '../context';
+// import { CustomButton } from '.'
+// import { useGlobalContext } from '../context';
 import { GetParams, SwitchNetwork } from '../utils/onboard.js';
 
 const OnboardModal = () => {
