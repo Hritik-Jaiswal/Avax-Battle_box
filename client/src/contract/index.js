@@ -1,5 +1,5 @@
 import contract from './AVAXGods.json'
 
-export const ADDRESS = '0x66A52CD571f5571A2B58AcB265242E1cCe16C85c'
+export const ADDRESS = '0xC11a2F607c793f0c021141De1AdBcAEDdA6D46E1'
 
 export const { abi: ABI } = contract; // allows our front-end side to call the functions we have created in our smart contracts.
