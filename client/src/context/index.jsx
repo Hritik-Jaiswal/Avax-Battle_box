@@ -26,59 +26,46 @@ export const GlobalContextProvider = ({ children }) => {
   });
 
   
-  // const updateCurrentWalletAddress = async() => {
-  //     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+ 
 
-  //    if(accounts) setWalletAddress(accounts[0])
-  // }
+  // Set the provider, contract, and wallet address to the state.
+useEffect(() => {
+  const setSmartContractAndProvider = async () => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const newProvider = new ethers.providers.Web3Provider(connection);
+    const signer = newProvider.getSigner();
+    const newContract = new ethers.Contract(ADDRESS, ABI, signer);
 
-  // useEffect(() => {
-  //     updateCurrentWalletAddress()
+    setProvider(newProvider);
+    setContract(newContract);
 
-  //     window.ethereum.on('accountsChanged', updateCurrentWalletAddress)
-  // }, [])
+    // Update the wallet address after connecting to the provider.
+    const accounts = await newProvider.listAccounts();
+    if (accounts.length) {
+      setWalletAddress(accounts[0]);
+    }
+  };
 
-  //Setting the wallet address to the state.
-  const updateCurrentWalletAddress = useCallback(async () => {
-    // we have ethereum as window object because of core wallet.
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
+  setSmartContractAndProvider();
+}, []);
 
-    if (accounts) setWalletAddress(accounts[0]);
-  }, [setWalletAddress]);
+// Update the current wallet address in the state and listen for changes.
+const updateCurrentWalletAddress = async () => {
+  if (window.ethereum) {
+    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    if (accounts.length) {
+      setWalletAddress(accounts[0]);
+    }
+  }
+};
 
-  useEffect(() => {
-    updateCurrentWalletAddress();
+useEffect(() => {
+  updateCurrentWalletAddress();
 
-    window.ethereum.on("accountsChanged", updateCurrentWalletAddress);
+  window.ethereum?.on("accountsChanged", updateCurrentWalletAddress);
+}, []);
 
-    // Clean up the subscription to avoid memory leaks
-    return () => {
-      window.ethereum.off("accountsChanged", updateCurrentWalletAddress);
-    };
-  }, [updateCurrentWalletAddress]);
-
-  //setting the smart contract and the provider to the state.
-  useEffect(() => {
-    const setSmartContractAndProvider = async () => {
-      try {
-        const web3modal = new Web3Modal();
-        const connection = await web3modal.connect();
-        const newProvider = new ethers.providers.Web3Provider(connection);
-        const signer = newProvider.getSigner();
-        const newContract = new ethers.Contract(ADDRESS, ABI, signer);
-
-        setProvider(newProvider);
-        setContract(newContract);
-      } catch (error) {
-        console.error(error);
-        // handle the error here, e.g. show an error message
-      }
-    };
-
-    setSmartContractAndProvider();
-  }, []);
 
   useEffect(() => {
     if (showAlert?.status) {
