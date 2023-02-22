@@ -16,18 +16,19 @@ const Home = () => {
         await contract.registerPlayer( playerName, playerName )
 
         setShowAlert({
-          status: 'true', 
+          status: true, 
           type: 'info', 
           message: `${playerName} is being summoned`
         })
       }
     } catch (error) {
+      const errorMessage = error.message.match(/[^{]*/)[0].trim();
       setShowAlert({
-        status: 'true', 
-        type: 'error', 
-        message: error.message
+        status: true, 
+        type: 'failure', 
+        message: errorMessage || "Something went wrong"
       })
-      console.log(error)
+      console.log(error, error.message)
     }
   }
   

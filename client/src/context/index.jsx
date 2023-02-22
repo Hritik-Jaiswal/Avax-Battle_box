@@ -70,7 +70,7 @@ useEffect(() => {
   useEffect(() => {
     if (showAlert?.status) {
       const timer = setTimeout(() => {
-        setShowAlert({ status: "false", type: "info", message: "" });
+        setShowAlert({ status: false, type: "info", message: "" });
       }, [5000]);
 
       return () => clearTimeout(timer);
