@@ -22,7 +22,12 @@ const Home = () => {
         })
       }
     } catch (error) {
-      alert(error)
+      setShowAlert({
+        status: 'true', 
+        type: 'error', 
+        message: error.message
+      })
+      console.log(error)
     }
   }
   

@@ -20,7 +20,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [provider, setProvider] = useState("");
   const [contract, setContract] = useState("");
   const [showAlert, setShowAlert] = useState({
-    status: "false",
+    status: false,
     type: "info",
     message: "",
   });
