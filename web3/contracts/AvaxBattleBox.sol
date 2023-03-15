@@ -121,7 +121,7 @@ contract AVAXGods is ERC1155, Ownable, ERC1155Supply {
   }
 
   // Events
-  event NewPlayer(address indexed owner, string name);
+   event NewPlayer(address indexed owner, string name);
   event NewBattle(string battleName, address indexed player1, address indexed player2);
   event BattleEnded(string battleName, address indexed winner, address indexed loser);
   event BattleMove(string indexed battleName, bool indexed isFirstMove);
