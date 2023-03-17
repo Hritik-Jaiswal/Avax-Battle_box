@@ -17,7 +17,7 @@ const GlobalContext = createContext();
 
 export const GlobalContextProvider = ({ children }) => {
   //fetching data from smart contract and pass right here.
-  const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddress, setWalletAddress] = useState(""); // Save wallet address of the current player
   const [provider, setProvider] = useState("");
   const [contract, setContract] = useState("");
   const [showAlert, setShowAlert] = useState({
@@ -25,6 +25,10 @@ export const GlobalContextProvider = ({ children }) => {
     type: "info",
     message: "",
   });
+  const [battleName, setBattleName] = useState('')
+  const [gameData, setGameData] = useState({
+    players: [], pendingBattles: [], activeBattle: null, 
+  })
 
   const navigate = useNavigate();
  
@@ -87,6 +91,29 @@ export const GlobalContextProvider = ({ children }) => {
       }
   }, [showAlert]);
 
+  // To check all the current ongoing battles created by the player
+  // Set the game gata to state
+  useEffect(() => {
+    const fetchGameData = async () => {
+      const fetchedBattles = await contract.getAllBattles()
+      const pendingBattles = fetchedBattles.filter((battle) => battle.status === 0)
+      let activeBattle = null
+
+      fetchedBattles.forEach((battle) => {
+        if (battle.players.find((player) => player.toLowerCase() === walletAddress.toLowerCase())){
+          if (battle.winner.startsWith('0x00')) {
+            activeBattle = battle
+          }
+        }
+      });
+      
+      setGameData({ pendingBattles: pendingBattles.slice(1),activeBattle })
+      console.log(fetchedBattles)
+    }
+
+    if (contract) fetchGameData()
+  }, [contract])
+
   return (
     <GlobalContext.Provider
       value={{
@@ -95,6 +122,9 @@ export const GlobalContextProvider = ({ children }) => {
         walletAddress,
         showAlert,
         setShowAlert,
+        battleName,
+        setBattleName,
+        gameData,
       }}
     >
       {children}
