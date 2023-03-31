@@ -1,22 +1,22 @@
-import React from 'react'
+import React from 'react';
 
-import styles from '../styles'
+import styles from '../styles';
 
-const regex = /^[A-Za-z0-9]+$/
+const regex = /^[A-Za-z0-9]+$/;
 
+const CustomInput = ({ label, placeHolder, value, handleValueChange }) => (
+  <>
+    <label htmlFor="name" className={styles.label}>{label}</label>
+    <input
+      type="text"
+      placeholder={placeHolder}
+      value={value}
+      onChange={(e) => {
+        if (e.target.value === '' || regex.test(e.target.value)) handleValueChange(e.target.value);
+      }}
+      className={styles.input}
+    />
+  </>
+);
 
-const CustomInput = ({ Label, placeholder, value, handleValueChange }) => {
-  return (
-    <>
-     <label htmlFor="name" className={ styles.label }>{ Label }</label>
-     <input 
-        type="text" placeholder={placeholder} value={value} className={styles.input}
-        onChange={(e) => {
-            if ( e.target.value === '' || regex.test(e.target.value )) handleValueChange(e.target.value) 
-        }}
-     />   
-    </>
-  )
-}
-
-export default CustomInput
+export default CustomInput;

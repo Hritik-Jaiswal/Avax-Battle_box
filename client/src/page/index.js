@@ -1,3 +1,13 @@
-export { default as CreateBattle } from './CreateBattle'
-export { default as Home } from './Home'
-export { default as JoinBattle } from './JoinBattle'
+import Home from './Home';
+import Battle from './Battle';
+import Battleground from './Battleground';
+import CreateBattle from './CreateBattle';
+import JoinBattle from './JoinBattle';
+
+export {
+  Battle,
+  Home,
+  Battleground,
+  CreateBattle,
+  JoinBattle,
+};
